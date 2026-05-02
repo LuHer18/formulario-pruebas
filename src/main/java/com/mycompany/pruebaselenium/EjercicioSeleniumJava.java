@@ -15,7 +15,7 @@ public class EjercicioSeleniumJava {
         driver = new ChromeDriver();
 
         // 🔹 Cambiar la ruta
-        driver.get("file:///D:\\Especializacion UTB\\Pruebas y Metricas de Calidad\\formulario-pruebas\\index.html");
+        driver.get("http://localhost:3000/index.html");
 
         cp01_registroValido();
 

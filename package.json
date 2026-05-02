@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "live-server --open=index.html --port=3000"
+    "start": "live-server --open=index.html --port=3000",
+    "selenium": "mvn -q compile exec:java"
   },
   "devDependencies": {
     "live-server": "^1.2.2"
