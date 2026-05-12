@@ -38,5 +38,5 @@ jobs:
       - name: Compilar proyecto Maven
         run: mvn clean compile
 
-      - name: Ejecutar pruebas Selenium
-        run: mvn compile exec:java
+      - name: Ejecutar pruebas JUnit con Selenium
+        run: mvn test
