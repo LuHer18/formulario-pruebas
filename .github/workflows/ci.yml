@@ -1,0 +1,42 @@
+name: CI - Pruebas y métricas
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  pruebas-selenium:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Descargar código fuente
+        uses: actions/checkout@v4
+
+      - name: Configurar Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Instalar dependencias de Node
+        run: npm install
+
+      - name: Levantar aplicación web
+        run: |
+          npm start &
+          sleep 8
+
+      - name: Compilar proyecto Maven
+        run: mvn clean compile
+
+      - name: Ejecutar pruebas Selenium
+        run: mvn compile exec:java
