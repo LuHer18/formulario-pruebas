@@ -5,6 +5,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.JavascriptExecutor;
 
 public class EjercicioSeleniumJava {
 
@@ -12,7 +14,13 @@ public class EjercicioSeleniumJava {
 
     public static void main(String[] args) {
 
-        driver = new ChromeDriver();
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless=new");
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--window-size=1920,1080");
+
+        driver = new ChromeDriver(options);
 
         // 🔹 Cambiar la ruta
         driver.get("http://localhost:3000/index.html");
@@ -33,10 +41,15 @@ public class EjercicioSeleniumJava {
 
     }
 
+    public static void limpiarDatos() {
+    ((JavascriptExecutor) driver).executeScript("localStorage.clear();");
+    driver.navigate().refresh();
+}
+
 // 🔹 CP01 - Registro válido
     public static void cp01_registroValido() {
 
-        driver.navigate().refresh();
+        limpiarDatos();
 
         driver.findElement(By.id("fullName")).sendKeys("Juan Perez");
 
@@ -65,7 +78,7 @@ public class EjercicioSeleniumJava {
 // 🔹 CP02 - Correo invalido
     public static void cp02_correoInvalido() {
 
-        driver.navigate().refresh();
+        limpiarDatos();
 
         driver.findElement(By.id("fullName")).sendKeys("Juan");
 
@@ -94,7 +107,7 @@ public class EjercicioSeleniumJava {
 // 🔹 CP03 - Password corta
     public static void cp03_passwordCorta() {
 
-        driver.navigate().refresh();
+        limpiarDatos();
 
         driver.findElement(By.id("fullName")).sendKeys("Juan");
 
@@ -123,7 +136,7 @@ public class EjercicioSeleniumJava {
 // 🔹 CP04 - Contraseñas no coinciden
     public static void cp04_passwordNoCoincide() {
 
-        driver.navigate().refresh();
+        limpiarDatos();
 
         driver.findElement(By.id("fullName")).sendKeys("Juan");
 
@@ -152,7 +165,7 @@ public class EjercicioSeleniumJava {
 // 🔹 CP05 - Campos vacíos
     public static void cp05_correoDuplicado() {
 
-        driver.navigate().refresh();
+        limpiarDatos();
 
 // 🔹 Primer registro (válido)
         driver.findElement(By.id("fullName")).sendKeys("Juan");
@@ -165,7 +178,7 @@ public class EjercicioSeleniumJava {
 
         driver.findElement(By.cssSelector("button")).click();
 
-        driver.navigate().refresh();
+        limpiarDatos();
 
 // 🔹 Segundo intento con el mismo correo
         driver.findElement(By.id("fullName")).sendKeys("Pedro");
@@ -195,7 +208,7 @@ public class EjercicioSeleniumJava {
 // 🔹 CP06 - Campos vacíos
     public static void cp06_camposVacios() {
 
-        driver.navigate().refresh();
+        limpiarDatos();
 
         driver.findElement(By.cssSelector("button")).click();
 
