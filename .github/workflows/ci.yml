@@ -36,7 +36,10 @@ jobs:
           sleep 8
 
       - name: Compilar proyecto Maven
-        run: mvn clean verify
+        run: mvn clean compile
+
+      - name: Ejecutar pruebas JUnit con Selenium
+        run: mvn test
       
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v5
