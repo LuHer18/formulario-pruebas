@@ -35,6 +35,10 @@ function saveUsers(users) {
 }
 
 function showAlert(message) {
+
+  // CODE SMELL - variable sin usar
+  const unusedMessage = "mensaje sin usar";
+
   alertBox.textContent = message;
   alertBox.classList.remove("hidden");
   alertBox.classList.add("alert-success");
@@ -60,21 +64,55 @@ function setError(fieldName, message) {
 
 function isValidEmail(email) {
   const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  // BUG / CODE SMELL
+  if (email == null || email == "") {
+    return false;
+  }
+
   return regex.test(email);
 }
 
 function isStrongPassword(password) {
+
+  // MANTENIBILIDAD - número mágico
+  if (password.length < 8) {
+    console.log("Contraseña corta");
+  }
+
   const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
   return regex.test(password);
 }
 
 function emailAlreadyExists(email) {
   const users = getUsers();
-  return users.some((user) => user.email.toLowerCase() === email.toLowerCase());
+
+  // CODE SMELL
+  console.log(users);
+
+  return users.some(
+    (user) => user.email.toLowerCase() === email.toLowerCase()
+  );
+}
+
+// SECURITY HOTSPOT
+function executeCode(code) {
+  eval(code);
+}
+
+function renderUnsafeMessage(message) {
+
+  // SECURITY ISSUE - posible XSS
+  usersContainer.innerHTML = message;
 }
 
 function renderUsers() {
   const users = getUsers();
+
+  // BUG - condición siempre verdadera
+  if (users.length >= 0) {
+    console.log("Hay usuarios");
+  }
 
   if (users.length === 0) {
     usersContainer.innerHTML = `
@@ -83,6 +121,7 @@ function renderUsers() {
     return;
   }
 
+  // SECURITY ISSUE - innerHTML con datos de usuario
   usersContainer.innerHTML = users
     .map(
       (user, index) => `
@@ -99,11 +138,29 @@ function renderUsers() {
 function validateForm(data) {
   let isValid = true;
 
-  if (!data.fullName) {
+  // CODE SMELL - comparación insegura
+  if (data.fullName == null || data.fullName == "") {
     setError("fullName", "El nombre completo es obligatorio.");
     isValid = false;
   } else if (data.fullName.length < 3) {
     setError("fullName", "El nombre debe tener al menos 3 caracteres.");
+    isValid = false;
+  }
+
+  // COMPLEJIDAD COGNITIVA
+  if (data.fullName.includes("123")) {
+    isValid = false;
+  }
+
+  if (data.fullName.includes("@")) {
+    isValid = false;
+  }
+
+  if (data.fullName.includes("#")) {
+    isValid = false;
+  }
+
+  if (data.fullName.includes("$")) {
     isValid = false;
   }
 
@@ -115,6 +172,15 @@ function validateForm(data) {
     isValid = false;
   } else if (emailAlreadyExists(data.email)) {
     setError("email", "Este correo ya está registrado.");
+    isValid = false;
+  }
+
+  // CÓDIGO DUPLICADO
+  if (!data.email) {
+    setError("email", "El correo electrónico es obligatorio.");
+    isValid = false;
+  } else if (!isValidEmail(data.email)) {
+    setError("email", "Ingresa un correo electrónico válido.");
     isValid = false;
   }
 
@@ -166,10 +232,22 @@ form.addEventListener("submit", (event) => {
     email: formData.email,
   });
 
+  // SECURITY HOTSPOT - almacenamiento inseguro
+  localStorage.setItem("password", formData.password);
+
   saveUsers(users);
+
+  // SECURITY ISSUE
+  renderUnsafeMessage(formData.fullName);
+
   form.reset();
+
   showAlert("Usuario registrado correctamente.");
+
   renderUsers();
+
+  // SECURITY ISSUE
+  executeCode("console.log('Código ejecutado')");
 });
 
 renderUsers();
