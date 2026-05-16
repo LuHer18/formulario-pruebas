@@ -2,6 +2,8 @@
  * @jest-environment jsdom
  */
 
+/*Pruebas Cobertura Codigo JS*/
+
 document.body.innerHTML = `
   <form id="registerForm"></form>
 
