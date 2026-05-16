@@ -4,9 +4,29 @@
   "private": true,
   "scripts": {
     "start": "live-server --open=index.html --port=3000",
-    "selenium": "mvn -q compile exec:java"
+    "selenium": "mvn -q compile exec:java",
+    "test": "jest --coverage"
   },
   "devDependencies": {
+    "jest": "^30.4.2",
+    "jest-environment-jsdom": "^30.4.1",
     "live-server": "^1.2.2"
-  }
+  },
+  "description": "Proyecto web estático compuesto por `index.html`, `app.js` y `styles.css`, con automatización Selenium en Java.",
+  "main": "app.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LuHer18/formulario-pruebas.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/LuHer18/formulario-pruebas/issues"
+  },
+  "homepage": "https://github.com/LuHer18/formulario-pruebas#readme"
 }
